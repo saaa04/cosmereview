@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ tag.tag }} に対するあなたの全レビュー</h2>
+<br>
+<ul>
+    {% for review in reviews %}
+        <a href="{% url 'detail-cosme' review.cosme.id %}" style="text-decoration: none; color: inherit;">
+            {% if review.cosme.thumbnail %}
+                <img src="{{ review.cosme.thumbnail.url }}" class="top5-thumbnail" alt="商品画像" />
+            {% else %}
+                <img src="/media/default-images/default_510x321.png" class="top5-thumbnail" alt="デフォルト画像" />
+            {% endif %}
+        <br>
+            <strong>{{ review.cosme.product_name }}</strong><br>
+            レビュー評価: ★{{ review.rate }}<br>
+            コメント: {{ review.text }}
+            <br>
+            <a href="{% url 'update-review' pk=review.id %}">編集</a>
+            <a href="{% url 'delete-review' pk=review.id %}">削除</a>
+        </a>
+    <br>
+    <br>
+    <br>
+    <br>
+    {% empty %}
+    <li>このタグに関連するあなたのレビューはありません。</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %} 
+    <h3>{{ medium_categories }}category のランキング</h3>
+<br>
+    <div class="product-list">
+        {% for product in products %}
+            <a href="{% url 'detail-cosme' product.id %}" style="text-decoration: none; color: inherit;"> <!--各商品ブロックをclick ▶ 商品詳細へ遷移-->
+                <!-- フレックスボックスのコンテナ -->
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <!-- 左側: サムネイル -->
+                    <div>
+                        {% if product.thumbnail %}
+                            <img src="{{ product.thumbnail.url }}" class="top5-thumbnail" alt="商品画像" />
+                        {% else %}
+                            <img src="/media/default-images/default_510x321.png" class="top5-thumbnail" alt="デフォルト画像" />
+                        {% endif %}
+                    </div>
+                        
+                    <!-- 右側: 商品情報 -->
+                    <div>
+                        <strong>{{ product.product_name }}</strong><br>
+                        {{ product.brand.brand_name }}<br>
+                        {{ product.reference_price }}円<br>
+                        <div class="star-rating">
+                            <div class="stars" style="--rating: {{ product.avg_rating }};" aria-label="Rating of {{ product.avg_rating }} out of 5."></div>
+                            <span class="rating-text">★ {{ product.avg_rating|floatformat:1 }} ({{ product.review_count }}件)</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <hr>
+        {% empty %}
+            <p>該当する商品がありません。</p>
+        {% endfor %}
+            
+    </div>
+{% endblock content %}

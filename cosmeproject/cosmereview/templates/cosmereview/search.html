@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h3>検索結果</h3>
+  <div class="search-results-container">
+    {% if search_results %}
+      <div class="search-results-header">
+        <span>{{ search_results.count }} 件</span>
+      </div>
+      <br>
+      <div class="products-grid">
+        {% for cosme in search_results %}
+          <a href="{% url 'detail-cosme' cosme.id %}" style="text-decoration: none; color: inherit;">
+            <div class="product-card">
+              {% if cosme.thumbnail %}
+                <img src="{{ cosme.thumbnail.url }}" class="search-thumbnail" alt="商品画像" />
+              {% else %}
+                <img src="/media/default-images/default_510x321.png" class="search-thumbnail" alt="デフォルト画像" />
+              {% endif %}
+
+              <div class="product-info">
+                <strong>{{ cosme.product_name }}</strong><br>
+                {{ cosme.brand.brand_name }}<br>
+                {{ cosme.reference_price }}円<br>
+                <div class="star-rating">
+                  <div class="stars" style="--rating: {{ cosme.avg_rating }};" aria-label="Rating of {{ cosme.avg_rating }} out of 5."></div>
+                  <span class="rating-text">★ {{ cosme.avg_rating|floatformat:1 }} ({{ cosme.review_count }}件)</span>
+                </div>
+                <br>
+
+                <p class="product-ingredient">成分: {{ cosme.Ingredient_list }}</p>
+                <p class="product-tags">タグ:
+                  {% for tag in cosme.tags.all %}
+                    {{ tag.tag }}{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                </p>
+              </div>
+            </div>
+          </a>
+          <br>
+          <hr>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>該当する商品が見つかりませんでした。</p>
+    {% endif %}
+  </div>
+{% endblock %}

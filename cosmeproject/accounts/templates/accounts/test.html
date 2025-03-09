@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}マイアカウントページ{% endblock %}
+{% block h1 %}マイアカウントページ{% endblock %}
+
+{% block content %}
+<h2>お気に入りブランドランキングTOP3</h2>
+<ul>
+    {% for brand in brand_rankings %}
+    <li>
+        <strong><a href="{% url 'brand-detail' pk=brand.brand_id %}">{{ brand.brand_name }}</a></strong><br>
+        ★ {{ brand.avg_rating|floatformat:1 }} (<a href="{% url 'brand-reviews' brand_id=brand.brand_id %}">{{ brand.review_count }}</a>件)
+    </li>
+    <br>
+    {% endfor %}
+</ul>
+
+<h2>興味のあるタグ</h2>
+<ul>
+    {% for tag in top_tags %}
+    <li>
+        <a href="{% url 'cosme-tag' tag.id %}">{{ tag.tag }}</a> (<a href="{% url 'tag-reviews' tag.id %}">{{ tag.tag_count }}</a>件)
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>よく使われている成分TOP30</h2>
+<div id="wordcloud" style="width: 600px; height: 400px; border: 1px solid #ccc;"></div>
+
+<!-- D3.js と Wordcloud2.js ライブラリをCDNから読み込み -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/wordcloud2.js"></script>
+
+<script>
+  // Djangoテンプレートから成分データをJavaScriptに渡す
+  const ingredients = [
+      {% for ingredient, count in top_ingredients %}
+          ["{{ ingredient|escapejs }}", {{ count }}],
+      {% endfor %}
+  ];
+  
+  console.log(ingredients);  // データ構造を確認
+
+  // Wordcloud2.jsでワードクラウドを生成
+  WordCloud(document.getElementById('wordcloud'), {
+      list: ingredients,
+      gridSize: Math.round(16 * $('#wordcloud').width() / 1024),
+      weightFactor: 2,
+      fontFamily: 'Times, serif',
+      color: 'random-dark',
+      rotateRatio: 0.5,
+      rotationSteps: 2,
+      backgroundColor: '#f0f0f0',
+  });
+</script>
+
+
+
+{% endblock content %}

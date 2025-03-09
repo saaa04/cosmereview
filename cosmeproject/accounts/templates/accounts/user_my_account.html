@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Myアカウントページ{% endblock %}
+{% block h1 %}Myアカウントページ{% endblock %}
+
+{% block content %}
+<br>
+<h3>お気に入りブランドランキングTOP3</h3>
+<ul>
+    {% for brand in brand_rankings %}
+    <li>
+        <strong><a href="{% url 'brand-detail' pk=brand.brand_id %}">{{ brand.brand_name }}</a></strong><br>
+        ★ {{ brand.avg_rating|floatformat:1 }} (<a href="{% url 'brand-reviews' brand_id=brand.brand_id %}">{{ brand.review_count }}</a>件)
+    </li>
+    <br>
+    {% endfor %}
+</ul>
+
+<h2>興味のあるタグ</h2>
+<ul>
+    {% for tag in top_tags %}
+    <li>
+        <a href="{% url 'cosme-tag' tag.id %}">{{ tag.tag }}</a> (<a href="{% url 'tag-reviews' tag.id %}">{{ tag.tag_count }}</a>件)
+    </li>
+    {% endfor %}
+</ul>
+<br>
+
+<h2>よく使われている成分TOP30</h2>
+<ul>
+    {% for ingredient, count in top_ingredients %}
+    <li>
+        {{ ingredient }} - {{ count }} 回
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

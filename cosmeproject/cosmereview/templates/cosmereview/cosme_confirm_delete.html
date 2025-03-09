@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}コスメ削除{% endblock %}
+
+{% block content %}
+    <p>本当に削除しますか？</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">{{ object.product_name }}を削除する</button>
+    </form>
+{% endblock %}

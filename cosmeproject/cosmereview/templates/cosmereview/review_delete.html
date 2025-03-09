@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>レビュー削除</h2>
+<br>
+<!-- 商品名とレビュー文を表示 -->
+<p><strong>商品名:</strong> {{ cosme_name }}</p>
+<div>
+    <strong>レビュー内容:</strong><br>
+    <em>　</em> <strong>★ {{ review.rate }}</strong><br>
+    <em>　</em> {{ review_text }}
+</div>
+<br>
+<br>
+
+<p>本当にこのレビューを削除しますか？</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">削除する</button>
+    <button type="button" onclick="window.location.href='{% url 'my-account' %}'">キャンセル</button>
+</form>
+{% endblock %}

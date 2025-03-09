@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}レビューを修正{% endblock %}
+
+{% block content %}
+{{ form.errors }}
+    <form method='POST' enctype="multipart/form-data" class="p-4 m-4 bg-light border solid #66cdaa; rounded form-group">
+        {% csrf_token %}
+        
+        <!-- 固定表示のCosme情報 -->
+        <div class="mb-3">
+            <label>商品名:</label>
+            <p>{{ cosme.product_name }}</p>
+        </div>
+        
+        <!-- 編集可能なフィールド -->
+        {{ form.as_p }}
+        
+        <button type="submit" class="btn btn-primary">修正する</button>
+        <a href="{% url 'delete-review' object.pk %}" class="btn btn-primary">削除する</a>
+    </form>
+{% endblock %}

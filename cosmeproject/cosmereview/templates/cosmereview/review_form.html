@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}レビュー投稿{% endblock %}
+{% block h1 %}レビュー投稿{% endblock %}
+
+{% block content %}
+  <form method="post" class="p-4 m-4 bg-light solid #66cdaa; rounded form-group">
+    {% csrf_token %}
+    <label>対象商品</label>
+    <input class="form-control" value="{{ cosme.title }}" readonly>
+    <label>口コミ文</label>
+    <textarea class="form-control" name="text" rows="3"></textarea>
+    <label>星の数</label>
+    <select class="form-control" name="rate">
+      <option value="1">1(最低)</option>
+      <option value="2">2</option>
+      <option value="3" selected>3 (普通)</option>
+      <option value="4">4</option>
+      <option value="5">5 (最高)</option>
+    </select>
+    <input type="hidden" name="cosme" value="{{ cosme.id }}">
+    <button type="submit" class="btn btn-primary mt-4">投稿する</button>
+  </form>
+{% endblock %}

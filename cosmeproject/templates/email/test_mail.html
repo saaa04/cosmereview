@@ -1,0 +1,6 @@
+<!-- templates/test_mail.html -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">テストメール送信</button>
+</form>

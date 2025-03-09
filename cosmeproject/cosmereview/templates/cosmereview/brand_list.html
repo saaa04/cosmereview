@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}ブランド一覧{% endblock %}
+{% block h1 %}ブランド一覧{% endblock %}
+   
+{% block content %}
+  {% for item in object_list %}
+  <div class="card">
+      <h5 class="card-header">
+          <a href="{% url 'brand-detail' item.pk %}">{{ item.brand_name }}</a>
+      </h5>
+  </div>
+  {% endfor %}
+{% endblock content %}

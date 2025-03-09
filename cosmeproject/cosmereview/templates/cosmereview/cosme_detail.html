@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}コスメ詳細{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h5 class="card-header">{{ object.product_name }}</h5>
+    <div class="card-body d-flex">
+        <!-- 左：商品画像 -->
+        <div class="cosme-thumbnail">
+            {% if cosme.thumbnail %}
+                <img src="{{ cosme.thumbnail.url }}" class="top5-thumbnail" alt="商品画像" />
+            {% else %}
+                <img src="/media/default-images/default_510x321.png" class="top5-thumbnail" alt="デフォルト画像" />
+            {% endif %}
+        </div>
+        
+        <!-- 右：商品説明の表示 -->
+        <div class="cosme-info">
+            <p>{{ cosme.brand.brand_name }}<br>
+            <br>
+            <strong>内容量 / 参考価格</strong><br>
+            {{ cosme.capacity }} / {{ cosme.reference_price }}円</p>
+
+            <strong>商品説明</strong><br>
+            <p>{{ cosme.product_description }}</p>
+            
+            <strong>商品成分</strong><br>
+            <p>{{ object.Ingredient_list }}</p>
+            
+            <strong>発売日</strong><br>
+            <p>{{ object.release_date | date:"Y/m/d" }}</p>
+
+                <!-- タグの表示部分 -->
+            <div class="tags-container">
+                <strong>関連するタグ</strong><br>
+                    {% for tag in object.tags.all %}
+                        <span class="tag">{{ tag.tag }}</span>
+                    {% empty %}
+                        <p>タグがありません。</p>
+                    {% endfor %}
+            </div>
+        <br>
+    
+            <!-- レビュー表示 -->
+            <strong>レビュー</strong> ({{ review_count }}件)
+            <div class="reviews-container">
+                {% for review in reviews %}
+                    <div class="review">
+                        <em>　</em> ★ <strong>{{ review.rate }}</strong>　<strong>{{ review.user.username }}</strong><br>
+                        <em>　</em> {{ review.text }}<br>
+                        <br>
+                    </div>
+                {% empty %}
+                    <p>まだレビューがありません。</p>
+                {% endfor %}
+            </div>
+
+
+
+            <!-- ボタン -->
+            <div class="button-container d-flex flex-wrap gap-2 mt-3">
+                <a href="{% url 'list-cosme' %}" class="btn btn-primary">商品一覧へ</a>
+                {% if object.user == request.user %}
+                    <a href="{% url 'update-cosme' object.pk %}" class="btn btn-primary">編集する</a>
+                    <a href="{% url 'delete-cosme' object.pk %}" class="btn btn-primary">削除する</a>
+                {% endif %}
+                <a href="{% url 'list-cosme' %}?cosme_id={{ object.pk }}" class="btn btn-primary">レビューする</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<style>
+.cosme-thumbnail {
+    flex: 1;
+    text-align: center;
+    margin-right: 20px;
+}
+
+.cosme-info {
+    flex: 2;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+.card-body.d-flex {
+    display: flex;
+    gap: 20px;
+}
+
+.button-container .btn {
+    flex: none; /* ボタンを全幅にしない設定 */
+}
+</style>

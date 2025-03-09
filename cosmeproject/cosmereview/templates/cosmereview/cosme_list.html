@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}コスメ一覧{% endblock %}
+
+{% block content %}
+{% for item in object_list %}
+<div class="card custom-card">
+  <div class="card-body custom-card-body d-flex flex-column">
+    <div class="d-flex">
+      <!-- 左：商品画像 -->
+      <div class="cosme-thumbnail">
+        {% if item.thumbnail %}
+          <img src="{{ item.thumbnail.url }}" class="top5-thumbnail" alt="商品画像" />
+        {% else %}
+          <img src="/media/default-images/default_510x321.png" class="top5-thumbnail" alt="デフォルト画像" />
+        {% endif %}
+      </div>
+
+      <!-- 右：商品説明の表示 -->
+      <div class="cosme-info">
+        <strong>{{ item.product_name }}</strong><br>
+        {{ item.brand.brand_name }}<br>
+        {{ item.reference_price }}円<br>
+        <span class="rating-text">
+          ★{{ item.avg_rating|floatformat:1 }} ({{ item.review_count }}件)
+        </span>
+      </div>
+    </div>
+    <br>
+
+    <!-- 詳細ボタン -->
+    <div class="button-section">
+      <a href="{% url "detail-cosme" item.pk %}" class="btn btn-primary">詳細へ</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock content %}
+
+
+<style>
+  .custom-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cosme-thumbnail {
+    {% comment %} flex: 3; /* 左に3割のスペース */ {% endcomment %}
+    text-align: center;
+  }
+
+  .cosme-info {
+    {% comment %} flex: 7; /* 右に7割のスペース */ {% endcomment %}
+  }
+
+  {% comment %} .cosme-thumbnail img {
+    max-width: 100%; /* サムネイルが枠に収まる */
+    height: auto; /* 高さは画像比率を維持 */
+  } {% endcomment %}
+
+  {% comment %} .button-section {
+    text-align: right; /* 右寄せに配置 */
+    margin-top: 10px;
+  } {% endcomment %}
+</style>

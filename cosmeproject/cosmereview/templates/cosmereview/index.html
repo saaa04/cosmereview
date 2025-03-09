@@ -1,0 +1,80 @@
+{% extends "logo_base.html" %}
+
+{% block content %} 
+<form method="GET" action="{% url 'search' %}">
+  <input type="text" name="q" placeholder="商品名、成分、ブランド名、タグで検索">
+  <button type="submit">検索する</button>
+</form>
+
+<br>
+<h5>よく検索されるワード TOP5</h5>
+{% if top_5_keywords %}
+    <ul>
+      {% for keyword in top_5_keywords %}
+        <li>{{ keyword.keyword }} ({{ keyword.count }}回検索)</li>
+      {% endfor %}
+    </ul>
+{% else %}
+    <p>現在、よく検索されているワードはありません。</p>
+{% endif %}
+
+<br>
+<br>
+
+
+
+<h4>商品ランキング TOP5</h4>
+{% for product in top_5_products %}
+  <a href="{% url 'detail-cosme' product.id %}" style="text-decoration: none; color: inherit;"> <!--各商品ブロックをclick ▶ 商品詳細へ遷移-->
+    <div style="padding: 10px; margin-bottom: 10px; border: 1px solid #66cdaa; border-radius: 10px;">
+      <h6><span style="color:#66cdaa">{{ forloop.counter }}位: {{ product.product_name }}</span></h6>
+      
+      <!-- フレックスボックスのコンテナ -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        
+        <!-- 左側: サムネイル -->
+        <div>
+          {% if product.thumbnail %}
+            <img src="{{ product.thumbnail.url }}" class="top5-thumbnail" alt="商品画像" />
+          {% else %}
+            <img src="{{ MEDIA_URL }}media/default-images/default_510x321.png" class="top5-thumbnail" alt="デフォルト画像" />
+          {% endif %}
+        </div>
+
+        <!-- 右側: 商品情報 -->
+        <div>
+          {{ product.brand.brand_name }}<br>
+          {{ product.reference_price }}円<br>
+          ★ {{ product.avg_rating|floatformat }} ({{ product.review_count }}件)</p>
+        </div>
+        
+      </div>
+    </div>
+  </a>
+{% endfor %}
+
+
+<br>
+
+
+<h4>ミディアムカテゴリごとの商品TOP3</h4>
+<br>
+{% for category, products in medium_categories_top3.items %}
+    <h5>{{ category }}</h5>
+    <ul>
+        {% for product in products %}
+          <a href="{% url 'detail-cosme' product.id %}" style="text-decoration: none; color: inherit;"> <!--各商品ブロックをclick ▶ 商品詳細へ遷移-->
+                {% if product.thumbnail %}
+                    <img src="{{ product.thumbnail.url }}" class="category-thumbnail" alt="{{ product.product_name }}" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}media/default-images/default_510x321.png" class="category-thumbnail" alt="デフォルト画像" />
+                {% endif %}
+                {{ product.product_name }} ★ {{ product.avg_rating|floatformat }}
+            <br>
+          </a>
+        {% endfor %}
+    </ul>
+    <br>
+{% endfor %}
+
+{% endblock content %}

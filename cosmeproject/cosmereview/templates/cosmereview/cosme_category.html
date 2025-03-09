@@ -1,0 +1,59 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カテゴリーリスト</title>
+    <style>
+        details {
+            margin-bottom: 1em;
+        }
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+{% extends "base.html" %}
+
+{% block title %}カテゴリ一覧{% endblock %}
+{% block h1 %}カテゴリ一覧{% endblock %}
+
+{% block content %}
+<br>
+    <!-- カテゴリーのループ -->
+    {% for large_category, mediums in grouped_cosme_categories.items %}
+        <details>
+            <summary>
+                <a href="{% url 'large-category_list' large_category=large_category %}">
+                    {{ large_category }}
+                </a>
+            </summary>
+            <ul>
+                {% for medium_categories, sub_categories in mediums.items %}
+                    <li>
+                        <details>
+                            <summary>
+                                <a href="{% url 'medium-category_list' medium_categories=medium_categories %}">
+                                    {{ medium_categories }}
+                                </a>
+                            </summary>
+                            <ul>
+                                {% for sub_category in sub_categories %}
+                                    <li>
+                                        <a href="{% url 'sub-category_cosme-list' sub_category=sub_category %}">
+                                            {{ sub_category }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                    </li>
+                {% endfor %}
+            </ul>
+        </details>
+    {% endfor %}
+{% endblock content %}

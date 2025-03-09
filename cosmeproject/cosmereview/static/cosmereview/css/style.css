@@ -1,0 +1,26 @@
+/* 商品ランキング TOP5 の画像 */
+.top5-thumbnail {
+    width: auto; /* アスペクト比を維持 */
+    height: 90px;
+    object-fit: cover; /* 必要に応じてクロップ */
+    border-radius: 5px;
+}
+
+/* ミディアムカテゴリごとの商品TOP3の画像 */
+.category-thumbnail {
+    width: auto;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
+/* 検索結果の商品画像 */
+.search-thumbnail {
+    width: auto;
+    height: 155px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
